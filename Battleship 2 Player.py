@@ -36,8 +36,10 @@ OpenCV to allow player to click their selection (once game is functioning, next 
 
 Functions:
 
+cls() - "clears" screen, ready for next player
 DisplayGrid() - used in GenerateGrid, shows grid in clean format.
 GenerateGrid() - produce empty 2D list of correct dimensions
+PossibleCoord() - checks to see if ship has possible orientations for coord
 PlaceShips() - take user inputs inside of function, place ships in feasible configuration, return 2D list
 Attack() - take coordinates and user's turn, attack the opponents grid
 DisplayOppGrid() - displays the opponent's grid, only showing HIT/MISS
@@ -45,6 +47,42 @@ DisplayOppGrid() - displays the opponent's grid, only showing HIT/MISS
 
 WIDTH = 8
 HEIGHT = 8
+
+
+class Player:
+
+    def __init__(self, pnum):
+        # Generate and fill board for the player
+        self.name = "Player " + str(pnum)
+        self.grid = GenerateGrid()
+        self.c4 = PlaceShips(4,self.grid)
+        self.c3 = PlaceShips(3,self.grid)
+        self.c2 = PlaceShips(2,self.grid)
+
+    def hitormiss(self, row, col):
+        # Determine if player's ship was hit/sank. Return true if ship sank
+        sank = False
+        if [row,col] in self.c4:
+            self.c4.remove([row,col])
+            print("Hit")
+            if len(self.c4) == 0:
+                print("You sank " + self.name + "'s 4 long ship!")
+                sank = True
+        elif [row,col] in self.c4:
+            self.c4.remove([row,col])
+            print("Hit")
+            if len(self.c4) == 0:
+                print("You sank " + self.name + "'s 4 long ship!")
+                sank = True
+        elif [row,col] in self.c4:
+            self.c4.remove([row,col])
+            print("Hit")
+            if len(self.c4) == 0:
+                print("You sank " + self.name + "'s 4 long ship!")
+                sank = True
+        else:
+            print("Miss")
+        return sank
 
 def cls():
     # Used to "clear" the screen, hiding placement of ships from the other user.
@@ -86,7 +124,7 @@ def GenerateGrid():
     return grid
 
 def PossibleCoord(row, col, grid, shipsize):
-    
+    # Assuming valid row/col position, checks if there are possible orientations
     L = col > (shipsize-2)
     if L:
         for i in range(1,shipsize):
@@ -119,7 +157,7 @@ def PlaceShips(shipsize, grid):
     # direction of their ship. If valid, places ship.
     row = -1
     col = -1
-    ####DisplayGrid(grid)
+    left,right,up,down = 0,0,0,0
     
     # Prompt user for coordinate until valid coordinate given
     while True:
@@ -144,7 +182,7 @@ def PlaceShips(shipsize, grid):
         except:
             print("Invalid input, must be an integer.\n")
 
-    
+    # print orientation options to user
     print("Select the orientation of the ship.")
     if left:
         print("1. [",row,',',col-(shipsize-1),"] - [",row,',',col,"], left")
@@ -155,7 +193,7 @@ def PlaceShips(shipsize, grid):
     if down:
         print("4. [",row,',',col,"] - [",row+(shipsize-1),',',col,"], down")
 
-    shipcoords = [[row,col]]
+    shipcoords = []
     # Prompt user for direction of ship
     while True:
         try:
@@ -163,22 +201,24 @@ def PlaceShips(shipsize, grid):
             if selection == 1 and left:
                 for i in range(shipsize):
                     grid[row][col-i] = 'W'
-                    shipcoords.append([row][col-i])
+                    print('ech')
+                    shipcoords.append([row,col-i])
+                    print("wap")
                 break
             elif selection == 2 and right:
                 for i in range(shipsize):
                     grid[row][col+i] = 'W'
-                    shipcoords.append([row][col+i])
+                    shipcoords.append([row,col+i])
                 break                    
             elif selection == 3 and up:
                 for i in range(shipsize):
                     grid[row-i][col] = 'W'
-                    shipcoords.append([row-i][col])
+                    shipcoords.append([row-i,col])
                 break
             elif selection == 4 and down:
                 for i in range(shipsize):
                     grid[row+i][col] = 'W'
-                    shipcoords.append([row+i][col])
+                    shipcoords.append([row+i,col])
                 break
             else:
                 print("Invalid selection")
@@ -186,6 +226,8 @@ def PlaceShips(shipsize, grid):
         # Input type invalid
         except:
             print("Invalid input, must be an integer.\n")
+            print(left)
+            print(selection)
             
     print("Ship placed successfully.")
     DisplayGrid(grid)
