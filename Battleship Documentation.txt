@@ -1,0 +1,57 @@
+Battleship 2 Player.py
+
+This game will allow 2 players to play Battleship. The structure of the game will be as follows:
+
+P1 selects coordinates of ships and orientation.
+P1 confirms placement
+P2 selects coordinates of ships and orientation.
+P2 confirms placement
+
+Empty board visible for P1, enter coordinates for missile
+If enemy ship in location, HIT
+else, MISS
+
+P2's turn, performing same tasks
+
+Repeat process until 1 player has sunk all of opponent's ships.
+
+
+Things to consider:
+
+Hide other player's moves when not their turn.
+Coordinate selections must be int and within the range
+Display coordinate grids. O for miss, X for hit, [ ] for no interaction
+List for initial placements and list for opponent view? Or just mask when playing?
+
+Produce text file upon game completion, displaying initial configurations of both players,
+   final results of both players
+OpenCV to allow player to click their selection (once game is functioning, next iteration of game)
+
+
+\ 0 1 2 3 4
+0
+1
+2
+
+chr(9632)
+
+Player class:
+__init__ - generates grid and places ship for player
+hitormiss - determines if player's ship was hit at coord
+
+.name - player's name
+.grid - player's grid
+.c4 - coords for 4 long ship
+.c3 - coords for 3 long ship
+.c2 - coords for 2 long ship
+
+Functions:
+
+cls() - "clears" screen, ready for next player
+DisplayGrid() - used in GenerateGrid, shows grid in clean format.
+GenerateGrid() - produce empty 2D list of correct dimensions
+PossibleCoord() - checks to see if ship has possible orientations for coord
+PlaceShips() - take user inputs inside of function, place ships in feasible configuration, return 2D list
+Attack() - take coordinates and user's turn, attack the opponents grid
+DisplayOppGrid() - displays the opponent's grid, only showing HIT/MISS
+SimBattle() - take attacker & defender as input, prompt coords, attack defender.
