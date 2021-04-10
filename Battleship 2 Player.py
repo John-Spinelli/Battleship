@@ -262,6 +262,7 @@ def PlaceShips(shipsize, grid):
 
 def SimBattle(attacker, defender):
     # Asks attacker for coordinates to attack, attacks the coordinate.
+    DisplayGrid(defender.grid, True)
     while True:
         try:
             print(attacker.name + ', select coordinate to attack.')
@@ -271,8 +272,12 @@ def SimBattle(attacker, defender):
             if (row >= 0 and row <= HEIGHT-1) and (col >= 0 and col <= WIDTH-1):
                 # New coord?
                 if defender.hitormiss(row,col):
+                    DisplayGrid(defender.grid, True)
                     input("Press enter to continue.")
+                    cls()
                     break
+            else:
+                print("Coordinate out of bounds")
         # Input type invalid
         except:
             print("Invalid input, must be an integer.\n")
@@ -288,29 +293,9 @@ def main():
     p1 = Player(1)
     p2 = Player(2)
 
-    '''
-    # Generate Grids for each player
-    P1 = GenerateGrid()
-    P2 = GenerateGrid()
-
-    # Place Ships for P1
-    print("Hello, Player 1. It is your turn to place your ships.")
-    print("You have a 4 long, 3 long and 2 long ship to place.")
-    DisplayGrid(P1)
-    P1_4 = PlaceShips(4,P1)
-    P1_3 = PlaceShips(3,P1)
-    P1_2 = PlaceShips(2,P1)
-    cls()
-
-    # Place Ships for P2
-    print("Hello, Player 2. It is your turn to place your ships.")
-    print("You have a 4 long, 3 long and 2 long ship to place.")
-    DisplayGrid(P2)
-    P2_4 = PlaceShips(4,P2)
-    P2_3 = PlaceShips(3,P2)
-    P2_2 = PlaceShips(2,P2)
-    cls()
-    '''            
+    SimBattle(p1,p2)
+    SimBattle(p1,p2)
+    SimBattle(p2,p1)
     
 main()
 
