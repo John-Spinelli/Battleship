@@ -44,6 +44,7 @@ hitormiss - determines if player's ship was hit at coord
 .c4 - coords for 4 long ship
 .c3 - coords for 3 long ship
 .c2 - coords for 2 long ship
+.ships - number of ships on board
 
 Functions:
 

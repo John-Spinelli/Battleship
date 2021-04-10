@@ -273,6 +273,10 @@ def SimBattle(attacker, defender):
                 # New coord?
                 if defender.hitormiss(row,col):
                     DisplayGrid(defender.grid, True)
+                    if defender.ships == 0:
+                        print(attacker.name, "wins!")
+                        DisplayGrid(defender.grid, True)
+                        return True
                     input("Press enter to continue.")
                     cls()
                     break
@@ -281,6 +285,11 @@ def SimBattle(attacker, defender):
         # Input type invalid
         except:
             print("Invalid input, must be an integer.\n")
+    
+    else:
+        return False
+
+    
 
 
 #Testing
@@ -293,9 +302,16 @@ def main():
     p1 = Player(1)
     p2 = Player(2)
 
-    SimBattle(p1,p2)
-    SimBattle(p1,p2)
-    SimBattle(p2,p1)
+    turn = 0
+    while True:
+        if turn == 0:
+            cont = SimBattle(p1,p2)
+        else:
+            cont = SimBattle(p2,p1)
+        if cont:
+            break
+        turn = (turn+1)%2
+    
     
 main()
 
