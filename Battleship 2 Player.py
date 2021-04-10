@@ -1,58 +1,8 @@
 '''
 Battleship 2 Player.py
 
-This game will allow 2 players to play Battleship. The structure of the game will be as follows:
-
-P1 selects coordinates of ships and orientation.
-P1 confirms placement
-P2 selects coordinates of ships and orientation.
-P2 confirms placement
-
-Empty board visible for P1, enter coordinates for missile
-If enemy ship in location, HIT
-else, MISS
-
-P2's turn, performing same tasks
-
-Repeat process until 1 player has sunk all of opponent's ships.
-
-
-Things to consider:
-
-Hide other player's moves when not their turn.
-Coordinate selections must be int and within the range
-Display coordinate grids. O for miss, X for hit, [ ] for no interaction
-List for initial placements and list for opponent view? Or just mask when playing?
-
-Produce text file upon game completion, displaying initial configurations of both players,
-   final results of both players
-OpenCV to allow player to click their selection (once game is functioning, next iteration of game)
-
-
-\ 0 1 2 3 4
-0
-1
-2
-
-Player class:
-__init__ - generates grid and places ship for player
-hitormiss - determines if player's ship was hit at coord
-
-.name - player's name
-.grid - player's grid
-.c4 - coords for 4 long ship
-.c3 - coords for 3 long ship
-.c2 - coords for 2 long ship
-
-Functions:
-
-cls() - "clears" screen, ready for next player
-DisplayGrid() - used in GenerateGrid, shows grid in clean format.
-GenerateGrid() - produce empty 2D list of correct dimensions
-PossibleCoord() - checks to see if ship has possible orientations for coord
-PlaceShips() - take user inputs inside of function, place ships in feasible configuration, return 2D list
-Attack() - take coordinates and user's turn, attack the opponents grid
-DisplayOppGrid() - displays the opponent's grid, only showing HIT/MISS
+This game will allow 2 players to play Battleship. See Battleship Documentation for list of functions
+and logistics
 '''
 
 WIDTH = 8
@@ -70,6 +20,7 @@ class Player:
         self.grid = GenerateGrid()
         DisplayGrid(self.grid)
         print("Hello,", self.name + ". It is your turn to place your ships.")
+        # Place each ship
         self.c4 = PlaceShips(4,self.grid)
         self.c3 = PlaceShips(3,self.grid)
         self.c2 = PlaceShips(2,self.grid)
@@ -80,37 +31,41 @@ class Player:
     def hitormiss(self, row, col):
         # Determine if player's ship was hit/sank. Return false if coord already
         # attacked by player, true if new coord
-
-        if self.grid[row][col] == HIT or self.grid[row][col] == MISS:
-            print("You have already attacked this coordinate.")
-            return False
-        self.grid[row][col] = HIT
-        # If new coord
-        if [row,col] in self.c4:
-            self.c4.remove([row,col])
-            print("Hit")
-            if len(self.c4) == 0:
-                print("You sank " + self.name + "'s 4 long ship!")
-                self.ships-=1
-                
-        elif [row,col] in self.c4:
-            self.c4.remove([row,col])
-            print("Hit")
-            if len(self.c4) == 0:
-                print("You sank " + self.name + "'s 4 long ship!")
-                self.ships-=1
-        elif [row,col] in self.c4:
-            self.c4.remove([row,col])
-            print("Hit")
-            if len(self.c4) == 0:
-                print("You sank " + self.name + "'s 4 long ship!")
-                self.ships-=1
-        # Empty coord
-        else:
-            print("Miss")
-            self.grid[row][col] = MISS
-        return True
-    
+        try:
+            if self.grid[row][col] == HIT or self.grid[row][col] == MISS:
+                print("You have already attacked this coordinate.")
+                return False
+            self.grid[row][col] = HIT
+            # If new coord:
+            # coord belongs to 4 long ship
+            if [row,col] in self.c4:
+                self.c4.remove([row,col])
+                print("Hit")
+                if len(self.c4) == 0:
+                    print("You sank " + self.name + "'s 4 long ship!")
+                    self.ships-=1
+            # 3 long ship        
+            elif [row,col] in self.c3:
+                self.c3.remove([row,col])
+                print("Hit")
+                if len(self.c3) == 0:
+                    print("You sank " + self.name + "'s 3 long ship!")
+                    self.ships-=1
+            # 4 long ship
+            elif [row,col] in self.c2:
+                self.c2.remove([row,col])
+                print("Hit")
+                if len(self.c2) == 0:
+                    print("You sank " + self.name + "'s 2 long ship!")
+                    self.ships-=1
+            # Empty coord
+            else:
+                print("Miss")
+                self.grid[row][col] = MISS
+            return True
+        except:
+            print("Something went wrong")
+            
 # //////////////////////////////
 
 def cls():
@@ -118,7 +73,7 @@ def cls():
     print ("\n" * 40)
 
 def DisplayGrid(grid, mask = False):
-    # Displays the grid in clean format. If mask == True, display ' ' instead of W
+    # Displays the grid in clean format. If mask == True, display ' ' instead of ship character
     print('\n\\', end='  ')
     for i in range(WIDTH):
         print(i, end='  ')
@@ -195,7 +150,7 @@ def PlaceShips(shipsize, grid):
             row = int(input("Enter the row #: "))
             col = int(input("Enter the col #: "))
             # Coordinate within board
-            if (row >= 0 and row <= HEIGHT-1) and (col >= 0 and col <= WIDTH-1) and grid[row][col] != 'W':
+            if (row >= 0 and row <= HEIGHT-1) and (col >= 0 and col <= WIDTH-1) and grid[row][col] != SHIP:
                 # Ship has at least one possible configuration 
                 left, right, up, down = PossibleCoord(row,col,grid,shipsize)
                 # No possible configuration
@@ -223,6 +178,7 @@ def PlaceShips(shipsize, grid):
         print("4. [",row,',',col,"] - [",row+(shipsize-1),',',col,"], down")
 
     shipcoords = []
+    selection = " "
     # Prompt user for direction of ship
     while True:
         try:
@@ -253,8 +209,6 @@ def PlaceShips(shipsize, grid):
         # Input type invalid
         except:
             print("Invalid input, must be an integer.\n")
-            print(left)
-            print(selection)
             
     print("Ship placed successfully.")
     DisplayGrid(grid)
@@ -274,12 +228,12 @@ def SimBattle(attacker, defender):
                 if defender.hitormiss(row,col):
                     DisplayGrid(defender.grid, True)
                     if defender.ships == 0:
-                        print(attacker.name, "wins!")
-                        DisplayGrid(defender.grid, True)
+                        print(attacker.name, "wins!\nGame Over")
                         return True
                     input("Press enter to continue.")
                     cls()
                     break
+                    
             else:
                 print("Coordinate out of bounds")
         # Input type invalid
@@ -289,12 +243,6 @@ def SimBattle(attacker, defender):
     else:
         return False
 
-    
-
-
-#Testing
-
-
 
 def main():
 
@@ -302,6 +250,7 @@ def main():
     p1 = Player(1)
     p2 = Player(2)
 
+    # Alternate turns until one player has no more ships
     turn = 0
     while True:
         if turn == 0:
@@ -311,8 +260,6 @@ def main():
         if cont:
             break
         turn = (turn+1)%2
-    
-    
+        
 main()
-
 
