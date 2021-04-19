@@ -1,0 +1,60 @@
+Battleship 2 Player.py
+
+This game will allow 2 players to play Battleship. The structure of the game will be as follows:
+
+P1 selects coordinates of ships and orientation.
+P2 selects coordinates of ships and orientation.
+
+Empty board visible for P1, enter coordinates for missile
+If enemy ship in location, HIT
+else, MISS
+
+P2's turn, performing same tasks
+Repeat process until 1 player has sunk all of opponent's ships.
+
+Things considered:
+
+Hide other player's moves when not their turn.
+Coordinate selections must be int and within the range
+Display coordinate grids. O for miss, X for hit, [ ] for no interaction
+List for initial placements and list for opponent view? Or just mask when playing?
+
+Produce text file upon game completion, displaying initial configurations of both players,
+   final results of both players
+OpenCV to allow player to click their selection (once game is functioning, next iteration of game)
+
+
+\ 0 1 2 3 4 ...7
+0
+1
+2
+...
+7
+
+Constants:
+WIDTH = 8     	  - Width of the board
+HEIGHT = 8    	  - Height of the board. Ideally square shaped
+SHIP = chr(9632)  - Character used to show ship placement. Full square.
+HIT = 'X'	  - X represents hit ship
+MISS = 'O'	  - O represents missed ship
+
+Player class:
+__init__ - generates grid and places ship for player
+hitormiss - determines if player's ship was hit at coord
+
+.name - player's name
+.grid - player's grid
+.c4 - coords for 4 long ship
+.c3 - coords for 3 long ship
+.c2 - coords for 2 long ship
+.ships - number of ships on board
+
+Functions:
+
+cls() - "clears" screen, ready for next player
+DisplayGrid() - used in GenerateGrid, shows grid in clean format. Can be used to show/hide ships
+GenerateGrid() - produce empty 2D list of board dimensions
+PossibleCoord() - checks to see if ship has possible orientations for given coord, assuming valid coord
+PlaceShips() - take user inputs inside of function, place ships in feasible configuration, return 2D list
+SimBattle() - take attacker & defender as input, prompt coords, attack defender.
+main() - runs game
