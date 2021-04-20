@@ -14,13 +14,16 @@ import numpy as np
 
 S_WIDTH = 800
 S_HEIGHT = 800
-cv.namedWindow("hey")
+cv.namedWindow("Battleship")
 background = (251, 221, 66)
 screen = np.zeros([S_WIDTH,S_HEIGHT,3], np.uint8)
 screen = cv.rectangle(screen, (0,0), (S_HEIGHT, S_WIDTH), background, -1)
-screen = cv.imshow("hey",screen)
 
-'''
+# Create Grid
+screen = cv.rectangle(screen, (100,100), (S_WIDTH-50, S_HEIGHT-100), (10,10,10), 10)
+screen = cv.imshow("Battleship",screen)
+
+
 # Battleship Constants
 WIDTH = 8
 HEIGHT = 8
@@ -278,6 +281,6 @@ def main():
             break
         turn = (turn+1)%2
         
-main()
+#main()
 
-'''
+
