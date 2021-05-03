@@ -15,12 +15,70 @@ import numpy as np
 S_WIDTH = 800
 S_HEIGHT = 800
 cv.namedWindow("Battleship")
+
+# Colour Bank
 background = (251, 221, 66)
+grey = (50, 50, 50)
+black = (10, 10, 10)
+text = (151, 101, 0)
+
+# Background
 screen = np.zeros([S_WIDTH,S_HEIGHT,3], np.uint8)
 screen = cv.rectangle(screen, (0,0), (S_HEIGHT, S_WIDTH), background, -1)
 
 # Create Grid
-screen = cv.rectangle(screen, (100,100), (S_WIDTH-50, S_HEIGHT-100), (10,10,10), 10)
+right_off = S_WIDTH-50
+bot_off = S_HEIGHT-50
+left_off = 100
+top_off = 100
+gridsize = int((right_off - left_off)/8) # Assuming square grid, right_off == bot_off
+
+# Grey Grid Lines
+screen = cv.rectangle(screen, (left_off+gridsize,top_off), (right_off-gridsize, bot_off), grey, 10)
+screen = cv.rectangle(screen, (left_off+2*gridsize,top_off), (right_off-2*gridsize, bot_off), grey, 10)
+screen = cv.rectangle(screen, (left_off+3*gridsize,top_off), (right_off-3*gridsize, bot_off), grey, 10)
+screen = cv.line(screen, (left_off+4*gridsize+2,top_off), (right_off-4*gridsize, bot_off), grey, 10)
+
+screen = cv.rectangle(screen, (left_off,top_off+gridsize), (right_off, bot_off-gridsize), grey, 10)
+screen = cv.rectangle(screen, (left_off,top_off+2*gridsize), (right_off, bot_off-2*gridsize), grey, 10)
+screen = cv.rectangle(screen, (left_off,top_off+3*gridsize), (right_off, bot_off-3*gridsize), grey, 10)
+screen = cv.line(screen, (left_off,top_off+4*gridsize), (right_off, bot_off-4*gridsize-2), grey, 10)
+
+# Black Grid Lines
+screen = cv.rectangle(screen, (left_off+gridsize,top_off), (right_off-gridsize, bot_off), black, 3)
+screen = cv.rectangle(screen, (left_off+2*gridsize,top_off), (right_off-2*gridsize, bot_off), black, 3)
+screen = cv.rectangle(screen, (left_off+3*gridsize,top_off), (right_off-3*gridsize, bot_off), black, 3)
+screen = cv.line(screen, (left_off+4*gridsize+2,top_off), (right_off-4*gridsize, bot_off), black, 3)
+
+screen = cv.rectangle(screen, (left_off,top_off+gridsize), (right_off, bot_off-gridsize), black, 3)
+screen = cv.rectangle(screen, (left_off,top_off+2*gridsize), (right_off, bot_off-2*gridsize), black, 3)
+screen = cv.rectangle(screen, (left_off,top_off+3*gridsize), (right_off, bot_off-3*gridsize), black, 3)
+screen = cv.line(screen, (left_off,top_off+4*gridsize), (right_off, bot_off-4*gridsize-2), black, 3)
+
+screen = cv.rectangle(screen, (left_off,top_off), (S_WIDTH-50, S_HEIGHT-50), grey, 10)
+screen = cv.rectangle(screen, (left_off,top_off), (S_WIDTH-50, S_HEIGHT-50), black, 3)
+
+font = cv.FONT_HERSHEY_SIMPLEX
+# X Coords
+screen = cv.putText(screen, "0", (int(left_off/2-10),int(top_off+gridsize-20)), font, 2, text, 2, cv.LINE_AA)
+screen = cv.putText(screen, "1", (int(left_off/2-10),int(top_off+2*gridsize-20)), font, 2, text, 2, cv.LINE_AA)
+screen = cv.putText(screen, "2", (int(left_off/2-10),int(top_off+3*gridsize-20)), font, 2, text, 2, cv.LINE_AA)
+screen = cv.putText(screen, "3", (int(left_off/2-10),int(top_off+4*gridsize-20)), font, 2, text, 2, cv.LINE_AA)
+screen = cv.putText(screen, "4", (int(left_off/2-10),int(top_off+5*gridsize-20)), font, 2, text, 2, cv.LINE_AA)
+screen = cv.putText(screen, "5", (int(left_off/2-10),int(top_off+6*gridsize-20)), font, 2, text, 2, cv.LINE_AA)
+screen = cv.putText(screen, "6", (int(left_off/2-10),int(top_off+7*gridsize-20)), font, 2, text, 2, cv.LINE_AA)
+screen = cv.putText(screen, "7", (int(left_off/2-10),int(top_off+8*gridsize-20)), font, 2, text, 2, cv.LINE_AA)
+
+# Y Coords
+screen = cv.putText(screen, "0", (int(left_off+20),int(top_off/2+20)), font, 2, text, 2, cv.LINE_AA)
+screen = cv.putText(screen, "1", (int(left_off+gridsize+20),int(top_off/2+20)), font, 2, text, 2, cv.LINE_AA)
+screen = cv.putText(screen, "2", (int(left_off+2*gridsize+20),int(top_off/2+20)), font, 2, text, 2, cv.LINE_AA)
+screen = cv.putText(screen, "3", (int(left_off+3*gridsize+20),int(top_off/2+20)), font, 2, text, 2, cv.LINE_AA)
+screen = cv.putText(screen, "4", (int(left_off+4*gridsize+20),int(top_off/2+20)), font, 2, text, 2, cv.LINE_AA)
+screen = cv.putText(screen, "5", (int(left_off+5*gridsize+20),int(top_off/2+20)), font, 2, text, 2, cv.LINE_AA)
+screen = cv.putText(screen, "6", (int(left_off+6*gridsize+20),int(top_off/2+20)), font, 2, text, 2, cv.LINE_AA)
+screen = cv.putText(screen, "7", (int(left_off+7*gridsize+20),int(top_off/2+20)), font, 2, text, 2, cv.LINE_AA)
+
 screen = cv.imshow("Battleship",screen)
 
 
